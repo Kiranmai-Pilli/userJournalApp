@@ -1,9 +1,11 @@
 package com.kiranmaipilli.userJournalApp.controller;
 
+import com.kiranmaipilli.userJournalApp.api.response.WeatherResponse;
 import com.kiranmaipilli.userJournalApp.entity.JournalEntry;
 import com.kiranmaipilli.userJournalApp.entity.User;
 import com.kiranmaipilli.userJournalApp.service.JournalEntryService;
 import com.kiranmaipilli.userJournalApp.service.UserService;
+import com.kiranmaipilli.userJournalApp.service.WeatherService;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -28,23 +30,26 @@ public class UserController {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    @Autowired
+    private WeatherService weatherService;
+
     //get all users
-    @GetMapping
-    public List<User> getAllUsers(){
-        return userService.getAll();
-    }
+//    @GetMapping
+//    public List<User> getAllUsers(){
+//        return userService.getAll();
+//    }
 
     //get my Id
-    @GetMapping("/userName/{userName}")
-    public User getUserbyuserName(@PathVariable  String userName){
-        return userService.getUserbyUsername(userName);
-    }
+//    @GetMapping("/userName/{userName}")
+//    public User getUserbyuserName(@PathVariable  String userName){
+//        return userService.getUserbyUsername(userName);
+//    }
 
-    @PostMapping
-    public boolean createUser(@RequestBody User user){
-        userService.saveUser(user);
-        return true;
-    }
+//    @PostMapping
+//    public boolean createUser(@RequestBody User user){
+//        userService.saveUser(user);
+//        return true;
+//    }
 
     //to save password in encypted form even inside db
     //moved to public end point
@@ -106,6 +111,17 @@ public class UserController {
         return true;
     }
 
+
+    @GetMapping
+    public ResponseEntity<?> greetings(){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        WeatherResponse weatherResponse = weatherService.getWeather("Kochi");
+        String greeting = "";
+        if(weatherResponse != null){
+            greeting = ", Weather feels like " + weatherResponse.getCurrent().getWeatherDescriptions().get(0);
+        }
+        return new ResponseEntity<>("Hi " + authentication.getName() + greeting, HttpStatus.OK);
+    }
 
 
 
