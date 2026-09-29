@@ -3,6 +3,7 @@ package com.kiranmaipilli.userJournalApp.controller;
 import com.kiranmaipilli.userJournalApp.cache.AppCache;
 import com.kiranmaipilli.userJournalApp.entity.User;
 import com.kiranmaipilli.userJournalApp.service.UserService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +13,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/admin")
+@Tag(name = "Admin APIs")
 public class AdminController {
     //it'll get us all the list of users that are present inside the system
 
